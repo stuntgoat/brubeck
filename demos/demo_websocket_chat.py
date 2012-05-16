@@ -65,9 +65,14 @@ class DisplayChatPage(WebMessageHandler):
 
 class WebsocketHandler(WebMessageHandler):
     def websocket(self):
-        # TODO: - on websocket close or timeout, remove client from CLIENT list
-        if self.message.conn_id not in CLIENTS:
-            CLIENTS.append(self.message.conn_id)
+
+        try:
+            if self.message.conn_id not in CLIENTS:
+                CLIENTS.append(self.message.conn_id)
+            elif self.message.headers['FLAGS'] == '0x88': # close flag
+                CLIENTS.pop(CLIENTS.index(self.message.conn_id))
+        except KeyError:
+            pass
 
         def ws_message(data):
             return Frame(opcode=OPCODE_TEXT, body=data, masking_key=os.urandom(4), fin=1).build()
