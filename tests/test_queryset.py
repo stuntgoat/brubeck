@@ -182,6 +182,7 @@ class TestDictQueryset(unittest.TestCase):
         self.assertEqual(self.queryset.MSG_OK, status)
         self.assertEqual(shield_to_keep.to_python(), datum)
 
+
 ##
 ## This will run our tests
 ##

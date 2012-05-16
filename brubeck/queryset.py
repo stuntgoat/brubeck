@@ -1,5 +1,6 @@
 from request_handling import FourOhFourException
 
+
 class AbstractQueryset(object):
     """The design of the `AbstractQueryset` attempts to map RESTful calls
     directly to CRUD calls. It also attempts to be compatible with a single
