@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import unittest
-
+import sys
 import brubeck
 from handlers.method_handlers import simple_handler_method
 from brubeck.request_handling import Brubeck, WebMessageHandler, JSONMessageHandler
@@ -18,7 +18,7 @@ from handlers.object_handlers import(
 from fixtures import request_handler_fixtures as FIXTURES
 
 from brubeck.autoapi import AutoAPIBase
-from brubeck.queryset import DictQueryset, AbstractQueryset, RedisQueryset
+from brubeck.queryset import DictQueryset, AbstractQueryset
 
 from dictshield.document import Document
 from dictshield.fields import StringField

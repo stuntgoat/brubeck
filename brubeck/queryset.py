@@ -1,9 +1,4 @@
 from request_handling import FourOhFourException
-from itertools import imap
-import zlib
-import redis
-import ujson as json
-
 
 class AbstractQueryset(object):
     """The design of the `AbstractQueryset` attempts to map RESTful calls
