@@ -20,16 +20,20 @@ class Connection(object):
     response is necessary.
     """
 
-    def __init__(self, incoming=None, outgoing=None):
+    def __init__(self, incoming=None, outgoing=None, logger=None):
         """The base `__init__()` function configures a unique ID and assigns
         the incoming and outgoing mechanisms to a name.
 
         `in_sock` and `out_sock` feel like misnomers at this time but they are
         preserved for a transition period.
+
+        logger may be a zeromq PUB socket.
         """
         self.sender_id = uuid4().hex
         self.in_sock = incoming
         self.out_sock = outgoing
+        if logging:
+            self.logger = logger
 
     def _unsupported(self, name):
         """Simple function that raises an exception.
@@ -130,7 +134,7 @@ class Mongrel2Connection(Connection):
     """
     MAX_IDENTS = 100
 
-    def __init__(self, pull_addr, pub_addr):
+    def __init__(self, pull_addr, pub_addr, logger=None):
         """sender_id = uuid.uuid4() or anything unique
         pull_addr = pull socket used for incoming messages
         pub_addr = publish socket used for outgoing messages
@@ -144,7 +148,7 @@ class Mongrel2Connection(Connection):
         in_sock = ctx.socket(zmq.PULL)
         out_sock = ctx.socket(zmq.PUB)
 
-        super(Mongrel2Connection, self).__init__(in_sock, out_sock)
+        super(Mongrel2Connection, self).__init__(in_sock, out_sock, logger=logger)
         self.in_addr = pull_addr
         self.out_addr = pub_addr
 
@@ -171,6 +175,8 @@ class Mongrel2Connection(Connection):
         zeromq socket and return whatever is found.
         """
         zmq_msg = self.in_sock.recv()
+        if self.logger:
+            self.logger.send(zmq_msg)
         return zmq_msg
 
     def recv_forever_ever(self, application):
