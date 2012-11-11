@@ -191,7 +191,7 @@ class TestRedisQueryset(unittest.TestCase):
 
     def setUp(self):
         import redis
-        redis_connection = redis.StrictRedis(host='localhost', port=6379, db=0)
+        redis_connection = redis.StrictRedis(host='localhost', port=6379, db='test_queryset.TestRedisQueryset')
         redis_connection.flushdb()
         self.queryset = RedisQueryset(db_conn=redis_connection)
 
